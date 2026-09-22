@@ -1,69 +1,123 @@
-import Image from "next/image";
+"use client";
+
+import { useState } from "react";
+
+// Datos de ejemplo para los eventos
+const EVENTOS_INICIALES = [
+  {
+    id: 1,
+    titulo: "Boda de Lujo en Jardín",
+    categoria: "Bodas",
+    capacidad: "200 personas",
+    precio: "$45,000 MXN",
+    descripcion: "Servicio integral con banquete de 3 tiempos, iluminación arquitectónica y pista de cristal.",
+    imagen: "https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&q=80&w=800",
+  },
+  {
+    id: 2,
+    titulo: "Convención Anual Corporativa",
+    categoria: "Empresariales",
+    capacidad: "500 personas",
+    precio: "$85,000 MXN",
+    descripcion: "Pantallas LED gigantes, audio profesional, catering continuo y registro digital.",
+    imagen: "https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&fit=crop&q=80&w=800",
+  },
+  {
+    id: 3,
+    titulo: "Gala de Graduación",
+    categoria: "Graduaciones",
+    capacidad: "350 personas",
+    precio: "$60,000 MXN",
+    descripcion: "DJ en vivo, photobooth 360°, cena gourmet y decoración temática.",
+    imagen: "https://images.unsplash.com/photo-1523580494863-6f3031224c94?auto=format&fit=crop&q=80&w=800",
+  },
+];
 
 export default function Home() {
+  const [categoriaSel, setCategoriaSel] = useState("Todos");
+
+  const categorias = ["Todos", "Bodas", "Empresariales", "Graduaciones"];
+
+  const eventosFiltrados =
+    categoriaSel === "Todos"
+      ? EVENTOS_INICIALES
+      : EVENTOS_INICIALES.filter((e) => e.categoria === categoriaSel);
+
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert h-5 w-[100px]"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the{" "}
-            <code className="rounded bg-black/[.06] px-1.5 py-0.5 font-mono text-[0.9em] dark:bg-white/[.08]">
-              page.tsx
-            </code>{" "}
-            file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
+    <main className="min-h-screen bg-slate-950 text-slate-100 p-6 md:p-12 font-sans">
+      {/* Encabezado */}
+      <header className="max-w-6xl mx-auto text-center space-y-4 mb-12">
+        <span className="bg-indigo-500/10 text-indigo-400 text-xs font-semibold px-3 py-1 rounded-full border border-indigo-500/20 uppercase tracking-wider">
+          Portafolio de Servicios
+        </span>
+        <h1 className="text-4xl md:text-6xl font-extrabold tracking-tight text-white">
+          Catálogo Exclusivo de Eventos
+        </h1>
+        <p className="text-slate-400 text-lg max-w-2xl mx-auto">
+          Explora nuestros paquetes diseñados para experiencias memorables.
+        </p>
+
+        {/* Filtros de Categorías */}
+        <div className="flex flex-wrap justify-center gap-2 pt-6">
+          {categorias.map((cat) => (
+            <button
+              key={cat}
+              onClick={() => setCategoriaSel(cat)}
+              className={`px-4 py-2 rounded-xl text-sm font-medium transition-all ${
+                categoriaSel === cat
+                  ? "bg-indigo-600 text-white shadow-lg shadow-indigo-600/30"
+                  : "bg-slate-900 text-slate-400 hover:bg-slate-800 hover:text-white"
+              }`}
             >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
+              {cat}
+            </button>
+          ))}
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+      </header>
+
+      {/* Grid de Tarjetas de Eventos */}
+      <section className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {eventosFiltrados.map((evento) => (
+          <article
+            key={evento.id}
+            className="bg-slate-900 rounded-2xl overflow-hidden border border-slate-800 hover:border-slate-700 transition-all flex flex-col justify-between"
           >
-            <Image
-              className="dark:invert h-[14px] w-4"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={14}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
-    </div>
+            <div>
+              <div className="h-48 overflow-hidden relative">
+                <img
+                  src={evento.imagen}
+                  alt={evento.titulo}
+                  className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+                />
+                <span className="absolute top-3 right-3 bg-slate-950/80 backdrop-blur-md text-xs font-medium text-slate-300 px-2.5 py-1 rounded-md border border-slate-700">
+                  {evento.categoria}
+                </span>
+              </div>
+              <div className="p-6 space-y-3">
+                <h3 className="text-xl font-bold text-white">{evento.titulo}</h3>
+                <p className="text-slate-400 text-sm leading-relaxed">
+                  {evento.descripcion}
+                </p>
+                <div className="text-xs text-indigo-400 font-semibold pt-2">
+                  Capacidad: {evento.capacidad}
+                </div>
+              </div>
+            </div>
+
+            <div className="p-6 pt-0 flex items-center justify-between border-t border-slate-800/50 mt-4">
+              <div>
+                <span className="text-xs text-slate-500 block">Desde</span>
+                <span className="text-lg font-bold text-emerald-400">
+                  {evento.precio}
+                </span>
+              </div>
+              <button className="bg-indigo-600 hover:bg-indigo-500 text-white text-sm font-medium px-4 py-2 rounded-xl transition-colors">
+                Cotizar Evento
+              </button>
+            </div>
+          </article>
+        ))}
+      </section>
+    </main>
   );
 }
